@@ -2,6 +2,10 @@
   <h2>Search Payee</h2>
   <form (ngSubmit)="searchPayee()">
     <div>
+      <label for="customerId">Customer ID:</label>
+      <input id="customerId" [(ngModel)]="customerId" name="customerId" type="number" required>
+    </div>
+    <div>
       <label for="payeeName">Payee Name:</label>
       <input id="payeeName" [(ngModel)]="payeeName" name="payeeName" required>
     </div>
