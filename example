@@ -1,13 +1,24 @@
-<div>
-  <h2>Payee List</h2>
-  <ul>
-    <li *ngFor="let payee of payees">
-      <div>Payee ID: {{ payee.payeeId }}</div>
-      <div>Customer ID: {{ payee.customerId }}</div>
-      <div>Name: {{ payee.payeeName }}</div>
-      <div>Account Number: {{ payee.payeeAccountNo }}</div>
-      <div>IFSC Code: {{ payee.payeeIfsccode }}</div>
-      <br>
-    </li>
-  </ul>
-</div>
+import { Component } from '@angular/core';
+import { PayeeService } from '../../services/payee.service';
+import { Payee } from '../../models/payee';
+
+@Component({
+  selector: 'app-payee-search',
+  templateUrl: './payee-search.component.html',
+  styleUrls: ['./payee-search.component.css']
+})
+export class PayeeSearchComponent {
+
+  payees: Payee[] = [];
+  customerId: number = 1; // Set the customerId accordingly
+  payeeName: string = '';
+
+  constructor(private payeeService: PayeeService) { }
+
+  searchPayee(): void {
+    this.payeeService.searchPayee(this.customerId, this.payeeName).subscribe(
+      data => this.payees = data,
+      error => console.error(error)
+    );
+  }
+}
