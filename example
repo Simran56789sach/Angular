@@ -1,1 +1,18 @@
-HttpErrorResponse {headers: _HttpHeaders, status: 400, statusText: 'OK', url: 'https://localhost:44346/api/payee/AddPayee', ok: false, …}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+import { PayeeSearchComponent } from './components/payee-search/payee-search.component';
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+
+const routes: Routes = [
+  { path: 'add-payee', component: PayeeAddComponent },
+  { path: 'search-payee', component: PayeeSearchComponent },
+  { path: 'list-payees', component: PayeeListComponent },
+  { path: '', redirectTo: '/add-payee', pathMatch: 'full' },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
