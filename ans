@@ -1,25 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app.config'; // Import AppRoutingModule
-
-import { AppComponent } from './app.component'; // Import AppComponent
-import { PayeeListComponent } from './components/payee-list/payee-list.component';
-import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from './app.routes'; // Import appRoutes from app.routes.ts
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PayeeListComponent,
-    PayeeAddComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    AppRoutingModule // Include AppRoutingModule
-  ],
-  bootstrap: [AppComponent] // Bootstrap AppComponent
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule]
 })
-export class AppModule { }
+export class AppRoutingModule { }
