@@ -1,11 +1,30 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { Component } from '@angular/core';
+import { Payee } from '../../models/payee';
+import { PayeeService } from '../../services/payee.service';
 
-if (environment.production) {
-  enableProdMode();
+@Component({
+  selector: 'app-payee-add',
+  templateUrl: './payee-add.component.html',
+  styleUrls: ['./payee-add.component.css']
+})
+export class PayeeAddComponent {
+  payee: Payee = new Payee();
+  payeeAdded: boolean = false;
+
+  constructor(private payeeService: PayeeService) { }
+
+  onSubmit(): void {
+    this.payeeService.addPayee(this.payee).subscribe(
+      (response) => {
+        console.log('Payee added successfully:', response);
+        this.payeeAdded = true; // Set flag to true to show confirmation
+        // Optionally reset form or show success message
+        this.payee = new Payee(); // Reset form after successful submission
+      },
+      (error) => {
+        console.error('Error adding payee:', error);
+        // Handle error, show error message, etc.
+      }
+    );
+  }
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
