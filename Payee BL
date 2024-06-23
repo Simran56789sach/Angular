@@ -1,0 +1,32 @@
+using Online_Banking_Portal.DAL;
+using Online_Banking_Portal.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Online_Banking_Portal.BL
+{
+    public class PayeeBL
+    {
+        public IEnumerable<Payee> GetPayeeBL(int customerId)
+        {
+            PayeeDAL payee = new PayeeDAL();
+            return payee.GetPayeeDAL(customerId);
+        }
+        
+        public IEnumerable<Payee> SearchPayeeBL(int customerId, string payeeName)
+        {
+            PayeeDAL payee = new PayeeDAL();
+            return payee.SearchPayeeDAL(customerId, payeeName);
+        }
+
+        public bool AddPayeeBL(Payee payee)
+        {
+            PayeeDAL payees = new PayeeDAL();
+            bool added = payees.AddPayeeDAL(payee);
+            return added;
+        }
+    }
+}
