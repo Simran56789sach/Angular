@@ -9,6 +9,7 @@ import { PayeeService } from '../../services/payee.service';
 })
 export class PayeeAddComponent implements OnInit {
   payee: Payee = new Payee();
+  payeeAdded = false; // Add this line to show success message
 
   constructor(private payeeService: PayeeService) { }
 
@@ -19,7 +20,9 @@ export class PayeeAddComponent implements OnInit {
     this.payeeService.addPayee(this.payee).subscribe(
       (response) => {
         console.log('Payee added successfully:', response);
-        // Optionally reset form or show success message
+        this.payeeAdded = true; // Show success message
+        // Optionally reset form
+        this.payee = new Payee();
       },
       (error) => {
         console.error('Error adding payee:', error);
