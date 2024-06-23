@@ -1,0 +1,65 @@
+using Microsoft.AspNetCore.Mvc;
+using Online_Banking_Portal.Entities;
+using Online_Banking_Portal.DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using Online_Banking_Portal.BL;
+
+namespace Online_Banking_Portal.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PayeeController : ControllerBase
+    {
+        private readonly OnlineBankingPortalContext _context = new OnlineBankingPortalContext();
+
+  /*      public PayeeController(OnlineBankingPortalContext context)
+        {
+            _context = context;
+        }*/
+
+        // Add Payee
+        [HttpPost("AddPayee")]
+        public async Task<IActionResult> AddPayee([FromBody] Payee payee)
+        {
+            if (ModelState.IsValid)
+            {
+                PayeeBL payees = new PayeeBL();
+                 bool added =payees.AddPayeeBL(payee);
+                if (added)
+                {
+                    return Ok(payee);
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
+
+        // Search Payee by Name
+        [HttpGet("SearchPayee/{customerId}/{payeeName}")]
+        public async Task<IActionResult> SearchPayee(int customerId, string payeeName)
+        {
+            PayeeBL payee = new PayeeBL();
+            var payees = payee.SearchPayeeBL(customerId,payeeName).ToList();
+            if (payees == null || !payees.Any())
+            {
+                return NotFound("No payees found with the specified name.");
+            }
+            return Ok(payees);
+        }
+
+        // List all Payees for a Customer
+        [HttpGet("ListPayees/{customerId}")]
+        public async Task<ActionResult <IEnumerable<Payee>>> ListPayees(int customerId)
+        {
+            PayeeBL payee = new PayeeBL();
+            var payees = payee.GetPayeeBL(customerId).ToList();
+            if (payees == null || !payees.Any())
+            {
+                return NotFound("No payees found for this customer.");
+            }
+            else { 
+            return payees;
+        }
+        }
+    }
+}
