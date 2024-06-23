@@ -1,23 +1,35 @@
-public bool CheckDuplicateAccountDAL(string accountNumber)
-{
-    return _context.Payees.Any(p => p.PayeeAccountNo == accountNumber);
-}
+import { Component } from '@angular/core';
+import { PayeeService } from '../../services/payee.service';
+import { Payee } from '../../models/payee';
 
-public bool AddPayeeDAL(Payee payee)
-{
-    bool added = false;
-    try
-    {
-        if (!CheckDuplicateAccountDAL(payee.PayeeAccountNo))
-        {
-            _context.Payees.Add(payee);
-            _context.SaveChanges();
-            added = true;
-        }
-    }
-    catch (Exception ex)
-    {
-        throw new SystemException(ex.Message);
-    }
-    return added;
+@Component({
+  selector: 'app-payee-add',
+  templateUrl: './payee-add.component.html',
+  styleUrls: ['./payee-add.component.css']
+})
+export class PayeeAddComponent {
+
+  payee: Payee = {
+    payeeId: 0,
+    customerId: 1,
+    payeeName: '',
+    payeeAccountNo: '',
+    payeeIfsccode: '',
+    customer: null
+  };
+
+  constructor(private payeeService: PayeeService) { }
+
+  addPayee(): void {
+    this.payeeService.addPayee(this.payee).subscribe(
+      response => {
+        console.log('Payee added successfully', response);
+        // Reset form or show success message
+      },
+      error => {
+        console.error('Error adding payee', error);
+        // Display error message to the user
+      }
+    );
+  }
 }
