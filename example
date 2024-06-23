@@ -1,24 +1,24 @@
-import { Component } from '@angular/core';
-import { PayeeService } from '../../services/payee.service';
-import { Payee } from '../../models/payee';
+<div>
+  <h2>Search Payee</h2>
+  <form (ngSubmit)="searchPayee()">
+    <div>
+      <label for="payeeName">Payee Name:</label>
+      <input id="payeeName" [(ngModel)]="payeeName" name="payeeName" required>
+    </div>
+    <button type="submit">Search</button>
+  </form>
 
-@Component({
-  selector: 'app-payee-search',
-  templateUrl: './payee-search.component.html',
-  styleUrls: ['./payee-search.component.css']
-})
-export class PayeeSearchComponent {
-
-  payees: Payee[] = [];
-  customerId: number = 1; // Set the customerId accordingly
-  payeeName: string = '';
-
-  constructor(private payeeService: PayeeService) { }
-
-  searchPayee(): void {
-    this.payeeService.searchPayee(this.customerId, this.payeeName).subscribe(
-      data => this.payees = data,
-      error => console.error(error)
-    );
-  }
-}
+  <div *ngIf="payees.length > 0">
+    <h3>Results</h3>
+    <ul>
+      <li *ngFor="let payee of payees">
+        <div>Payee ID: {{ payee.payeeId }}</div>
+        <div>Customer ID: {{ payee.customerId }}</div>
+        <div>Name: {{ payee.payeeName }}</div>
+        <div>Account Number: {{ payee.payeeAccountNo }}</div>
+        <div>IFSC Code: {{ payee.payeeIfsccode }}</div>
+        <br>
+      </li>
+    </ul>
+  </div>
+</div>
