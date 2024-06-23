@@ -1,0 +1,71 @@
+using Azure;
+using Microsoft.EntityFrameworkCore;
+using Online_Banking_Portal.DAL.Models;
+using Online_Banking_Portal.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Online_Banking_Portal.DAL
+{
+    public class PayeeDAL
+    {
+        private readonly OnlineBankingPortalContext _context = new OnlineBankingPortalContext();
+
+        public PayeeDAL()
+        {
+        }
+
+        public IEnumerable<Payee> GetPayeeDAL(int customerId)
+        {
+            try
+            {
+                List<Payee> payee = new List<Payee>();
+                payee = _context.Payees.Where(p => p.CustomerId == customerId).ToList();
+                return payee;
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+        }
+        
+        public IEnumerable<Payee> SearchPayeeDAL(int customerId, string payeeName)
+        {
+            try
+            {
+                List<Payee> payee = new List<Payee>();
+                payee = _context.Payees
+                .Where(p => p.CustomerId == customerId && p.PayeeName.Contains(payeeName))
+                .ToList();
+                return payee;
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+        }
+        public bool AddPayeeDAL(Payee payee)
+        {
+            bool added = false;
+            try
+            {
+                _context.Payees.Add(payee);
+                _context.SaveChangesAsync();
+                added = true;
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+            return added;
+        }
+
+        
+
+
+     
+    }
+}
