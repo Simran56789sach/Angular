@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { PayeeListComponent } from './components/payee-list/payee-list.component';
 import { PayeeAddComponent } from './components/payee-add/payee-add.component';
 
-const routes: Routes = [
-  { path: 'payees', component: PayeeListComponent },
-  { path: 'add-payee', component: PayeeAddComponent },
-  { path: '', redirectTo: '/payees', pathMatch: 'full' }
-];
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  declarations: [
+    AppComponent,
+    PayeeListComponent,
+    PayeeAddComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class AppRoutingModule { }
-
+export class AppModule { }
