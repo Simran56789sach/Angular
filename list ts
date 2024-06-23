@@ -1,0 +1,32 @@
+import { Component, OnInit } from '@angular/core';
+import { Payee } from '../../models/payee';
+import { PayeeService } from '../../services/payee.service';
+
+@Component({
+  selector: 'app-payee-list',
+  templateUrl: './payee-list.component.html',
+  styleUrls: ['./payee-list.component.css']
+})
+export class PayeeListComponent implements OnInit {
+  payees: Payee[] = [];
+
+  constructor(private payeeService: PayeeService) { }
+
+  ngOnInit(): void {
+    this.loadPayees();
+  }
+
+  loadPayees(): void {
+    // Assuming customerId needs to be passed
+    const customerId = 1; // Replace with actual customer id
+    this.payeeService.listPayees(customerId).subscribe(
+      (payees) => {
+        this.payees = payees;
+      },
+      (error) => {
+        console.error('Error loading payees:', error);
+        // Handle error, show error message, etc.
+      }
+    );
+  }
+}
