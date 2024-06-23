@@ -1,27 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { PayeeService } from '../../services/payee.service';
-import { Payee } from '../../models/payee';
-
-@Component({
-  selector: 'app-payee-list',
-  templateUrl: './payee-list.component.html',
-  styleUrls: ['./payee-list.component.css']
-})
-export class PayeeListComponent implements OnInit {
-
-  payees: Payee[] = [];
-  customerId: number = 1; // Set the customerId accordingly
-
-  constructor(private payeeService: PayeeService) { }
-
-  ngOnInit(): void {
-    this.getPayees();
-  }
-
-  getPayees(): void {
-    this.payeeService.listPayees(this.customerId).subscribe(
-      data => this.payees = data,
-      error => console.error(error)
-    );
-  }
-}
+<div>
+  <h2>Payee List</h2>
+  <ul>
+    <li *ngFor="let payee of payees">
+      <div>Payee ID: {{ payee.payeeId }}</div>
+      <div>Customer ID: {{ payee.customerId }}</div>
+      <div>Name: {{ payee.payeeName }}</div>
+      <div>Account Number: {{ payee.payeeAccountNo }}</div>
+      <div>IFSC Code: {{ payee.payeeIfsccode }}</div>
+      <br>
+    </li>
+  </ul>
+</div>
