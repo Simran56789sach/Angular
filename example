@@ -1,18 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PayeeAddComponent } from './components/payee-add/payee-add.component';
-import { PayeeSearchComponent } from './components/payee-search/payee-search.component';
-import { PayeeListComponent } from './components/payee-list/payee-list.component';
-
-const routes: Routes = [
-  { path: 'add-payee', component: PayeeAddComponent },
-  { path: 'search-payee', component: PayeeSearchComponent },
-  { path: 'list-payees', component: PayeeListComponent },
-  { path: '', redirectTo: '/add-payee', pathMatch: 'full' },
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+<div>
+  <h1>Online Banking Portal</h1>
+  <nav>
+    <ul>
+      <li><a routerLink="/add-payee">Add Payee</a></li>
+      <li><a routerLink="/search-payee">Search Payee</a></li>
+      <li><a routerLink="/list-payees">List Payees</a></li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
