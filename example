@@ -1,5 +1,26 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app.module';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+import { AppComponent } from './app.component';
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+import { PayeeSearchComponent } from './components/payee-search/payee-search.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    PayeeListComponent,
+    PayeeAddComponent,
+    PayeeSearchComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
