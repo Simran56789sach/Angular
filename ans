@@ -1,8 +1,10 @@
-<div>
-  <h1>Welcome to {{ title }}!</h1>
-  <nav>
-    <a routerLink="/payees" routerLinkActive="active">Payee List</a>
-    <a routerLink="/add-payee" routerLinkActive="active">Add Payee</a>
-  </nav>
-  <router-outlet></router-outlet>
-</div>
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'online-banking-portal';
+}
