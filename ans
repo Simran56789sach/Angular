@@ -1,26 +1,32 @@
-<div class="max-w-md mx-auto bg-white shadow-md p-8 rounded-lg">
-  <h2 class="text-2xl font-bold mb-6">Add Payee</h2>
-  <form (ngSubmit)="onSubmit()">
-    <div class="mb-4">
-      <label for="payeeName" class="block text-sm font-medium text-gray-700">Payee Name:</label>
-      <input type="text" id="payeeName" name="payeeName" [(ngModel)]="payee.payeeName" required
-             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    </div>
-    <div class="mb-4">
-      <label for="payeeAccountNo" class="block text-sm font-medium text-gray-700">Payee Account Number:</label>
-      <input type="text" id="payeeAccountNo" name="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" required
-             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    </div>
-    <div class="mb-4">
-      <label for="payeeIfsccode" class="block text-sm font-medium text-gray-700">Payee IFSC Code:</label>
-      <input type="text" id="payeeIfsccode" name="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" required
-             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    </div>
-    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Add Payee</button>
-  </form>
+import { Component, OnInit } from '@angular/core';
+import { Payee } from '../../models/payee';
+import { PayeeService } from '../../services/payee.service';
 
-  <!-- Confirmation Message -->
-  <div *ngIf="payeeAdded" class="mt-4 p-3 bg-green-100 text-green-700 rounded">
-    Payee added successfully!
-  </div>
-</div>
+@Component({
+  selector: 'app-payee-list',
+  templateUrl: './payee-list.component.html',
+  styleUrls: ['./payee-list.component.css']
+})
+export class PayeeListComponent implements OnInit {
+  payees: Payee[] = [];
+
+  constructor(private payeeService: PayeeService) { }
+
+  ngOnInit(): void {
+    this.loadPayees();
+  }
+
+  loadPayees(): void {
+    // Replace customerId with actual value or fetch dynamically
+    const customerId = 1; // Replace with actual customer id
+    this.payeeService.listPayees(customerId).subscribe(
+      (payees) => {
+        this.payees = payees;
+      },
+      (error) => {
+        console.error('Error loading payees:', error);
+        // Handle error, show error message, etc.
+      }
+    );
+  }
+}
