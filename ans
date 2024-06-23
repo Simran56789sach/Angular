@@ -1,10 +1,17 @@
-<h2>Add Payee</h2>
-<form (ngSubmit)="addPayee()">
-  <label for="payeeName">Name:</label>
-  <input type="text" id="payeeName" [(ngModel)]="payee.payeeName" name="payeeName" required>
-  <label for="payeeAccountNo">Account No:</label>
-  <input type="text" id="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" name="payeeAccountNo" required>
-  <label for="payeeIfsccode">IFSC Code:</label>
-  <input type="text" id="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" name="payeeIfsccode" required>
-  <button type="submit">Add Payee</button>
-</form>
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+
+const routes: Routes = [
+  { path: 'payees', component: PayeeListComponent },
+  { path: 'add-payee', component: PayeeAddComponent },
+  { path: '', redirectTo: '/payees', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
