@@ -1,18 +1,37 @@
-<div>
-  <h2>Add Payee</h2>
-  <form (ngSubmit)="addPayee()">
-    <div>
-      <label for="payeeName">Payee Name:</label>
-      <input id="payeeName" [(ngModel)]="payee.payeeName" name="payeeName" required>
-    </div>
-    <div>
-      <label for="payeeAccountNo">Account Number:</label>
-      <input id="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" name="payeeAccountNo" required>
-    </div>
-    <div>
-      <label for="payeeIfsccode">IFSC Code:</label>
-      <input id="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" name="payeeIfsccode" required>
-    </div>
-    <button type="submit">Add Payee</button>
-  </form>
-</div>
+import { Component } from '@angular/core';
+import { PayeeService } from '../../services/payee.service';
+import { Payee } from '../../models/payee';
+
+@Component({
+  selector: 'app-payee-add',
+  templateUrl: './payee-add.component.html',
+  styleUrls: ['./payee-add.component.css']
+})
+export class PayeeAddComponent {
+
+  payee: Payee = {
+    payeeId: 0,
+    customerId: 1,
+    payeeName: '',
+    payeeAccountNo: '',
+    payeeIfsccode: '',
+    customer: null
+  };
+
+  payeeAdded: boolean = false; // Flag to track if payee was added successfully
+
+  constructor(private payeeService: PayeeService) { }
+
+  addPayee(): void {
+    this.payeeService.addPayee(this.payee).subscribe(
+      response => {
+        console.log('Payee added successfully', response);
+        this.payeeAdded = true; // Set flag to true upon successful addition
+      },
+      error => {
+        console.error('Error adding payee', error);
+        // Handle error scenario if needed
+      }
+    );
+  }
+}
