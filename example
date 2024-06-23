@@ -1,16 +1,23 @@
-public bool CheckDuplicateAccount(string accountNumber)
+public bool CheckDuplicateAccountDAL(string accountNumber)
 {
-    PayeeDAL payeeDAL = new PayeeDAL();
-    return payeeDAL.CheckDuplicateAccountDAL(accountNumber);
+    return _context.Payees.Any(p => p.PayeeAccountNo == accountNumber);
 }
 
-public bool AddPayeeBL(Payee payee)
+public bool AddPayeeDAL(Payee payee)
 {
-    if (CheckDuplicateAccount(payee.PayeeAccountNo))
+    bool added = false;
+    try
     {
-        return false; // Account number already exists
+        if (!CheckDuplicateAccountDAL(payee.PayeeAccountNo))
+        {
+            _context.Payees.Add(payee);
+            _context.SaveChanges();
+            added = true;
+        }
     }
-
-    PayeeDAL payeeDAL = new PayeeDAL();
-    return payeeDAL.AddPayeeDAL(payee);
+    catch (Exception ex)
+    {
+        throw new SystemException(ex.Message);
+    }
+    return added;
 }
