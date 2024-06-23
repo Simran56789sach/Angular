@@ -1,0 +1,25 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Payee } from '../models/payee';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PayeeService {
+  private apiUrl = 'https://localhost:5001/api/Payee';
+
+  constructor(private http: HttpClient) { }
+
+  addPayee(payee: Payee): Observable<Payee> {
+    return this.http.post<Payee>(`${this.apiUrl}/AddPayee`, payee);
+  }
+
+  searchPayee(customerId: number, payeeName: string): Observable<Payee[]> {
+    return this.http.get<Payee[]>(`${this.apiUrl}/SearchPayee/${customerId}/${payeeName}`);
+  }
+
+  listPayees(customerId: number): Observable<Payee[]> {
+    return this.http.get<Payee[]>(`${this.apiUrl}/ListPayees/${customerId}`);
+  }
+}
