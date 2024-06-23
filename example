@@ -1,18 +1,24 @@
-<div>
-  <h2>Add Payee</h2>
-  <form (ngSubmit)="addPayee()">
-    <div>
-      <label for="payeeName">Payee Name:</label>
-      <input id="payeeName" [(ngModel)]="payee.payeeName" name="payeeName" required>
-    </div>
-    <div>
-      <label for="payeeAccountNo">Account Number:</label>
-      <input id="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" name="payeeAccountNo" required>
-    </div>
-    <div>
-      <label for="payeeIfsccode">IFSC Code:</label>
-      <input id="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" name="payeeIfsccode" required>
-    </div>
-    <button type="submit">Add Payee</button>
-  </form>
-</div>
+import { Component } from '@angular/core';
+import { PayeeService } from '../../services/payee.service';
+import { Payee } from '../../models/payee';
+
+@Component({
+  selector: 'app-payee-search',
+  templateUrl: './payee-search.component.html',
+  styleUrls: ['./payee-search.component.css']
+})
+export class PayeeSearchComponent {
+
+  payees: Payee[] = [];
+  customerId: number = 1; // Set the customerId accordingly
+  payeeName: string = '';
+
+  constructor(private payeeService: PayeeService) { }
+
+  searchPayee(): void {
+    this.payeeService.searchPayee(this.customerId, this.payeeName).subscribe(
+      data => this.payees = data,
+      error => console.error(error)
+    );
+  }
+}
