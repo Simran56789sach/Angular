@@ -1,8 +1,24 @@
-<div>
-  <h2>Payee List</h2>
-  <ul>
-    <li *ngFor="let payee of payees">
-      {{ payee.payeeName }} - {{ payee.payeeAccountNo }}
-    </li>
-  </ul>
-</div>
+import { Component } from '@angular/core';
+import { PayeeService } from '../../services/payee.service';
+import { Payee } from '../../models/payee';
+
+@Component({
+  selector: 'app-payee-add',
+  templateUrl: './payee-add.component.html',
+  styleUrls: ['./payee-add.component.css']
+})
+export class PayeeAddComponent {
+
+  payee: Payee = { payeeId: 0, customerId: 1, payeeName: '', payeeAccountNo: '', payeeIfsccode: '' };
+
+  constructor(private payeeService: PayeeService) { }
+
+  addPayee(): void {
+    this.payeeService.addPayee(this.payee).subscribe(
+      data => {
+        console.log('Payee added successfully', data);
+      },
+      error => console.error(error)
+    );
+  }
+}
