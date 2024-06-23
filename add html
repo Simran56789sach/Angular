@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="payeeName">Payee Name:</label>
+    <input type="text" id="payeeName" name="payeeName" [(ngModel)]="payee.payeeName" required>
+  </div>
+  <div>
+    <label for="payeeAccountNo">Payee Account Number:</label>
+    <input type="text" id="payeeAccountNo" name="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" required>
+  </div>
+  <div>
+    <label for="payeeIfsccode">Payee IFSC Code:</label>
+    <input type="text" id="payeeIfsccode" name="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" required>
+  </div>
+  <button type="submit">Add Payee</button>
+</form>
