@@ -1,21 +1,10 @@
-import { Component } from '@angular/core';
-import { PayeeService } from '../../services/payee.service';
-import { Payee } from '../../models/payee';
-
-@Component({
-  selector: 'app-payee-add',
-  templateUrl: './payee-add.component.html',
-  styleUrls: ['./payee-add.component.css']
-})
-export class PayeeAddComponent {
-  payee: Payee = new Payee();
-
-  constructor(private payeeService: PayeeService) { }
-
-  addPayee(): void {
-    this.payee.customerId = 1;  // Replace with actual customer ID
-    this.payeeService.addPayee(this.payee).subscribe(response => {
-      console.log('Payee added', response);
-    });
-  }
-}
+<h2>Add Payee</h2>
+<form (ngSubmit)="addPayee()">
+  <label for="payeeName">Name:</label>
+  <input type="text" id="payeeName" [(ngModel)]="payee.payeeName" name="payeeName" required>
+  <label for="payeeAccountNo">Account No:</label>
+  <input type="text" id="payeeAccountNo" [(ngModel)]="payee.payeeAccountNo" name="payeeAccountNo" required>
+  <label for="payeeIfsccode">IFSC Code:</label>
+  <input type="text" id="payeeIfsccode" [(ngModel)]="payee.payeeIfsccode" name="payeeIfsccode" required>
+  <button type="submit">Add Payee</button>
+</form>
