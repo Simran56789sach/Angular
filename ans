@@ -1,32 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Payee } from '../../models/payee';
-import { PayeeService } from '../../services/payee.service';
-
-@Component({
-  selector: 'app-payee-list',
-  templateUrl: './payee-list.component.html',
-  styleUrls: ['./payee-list.component.css']
-})
-export class PayeeListComponent implements OnInit {
-  payees: Payee[] = [];
-
-  constructor(private payeeService: PayeeService) { }
-
-  ngOnInit(): void {
-    this.loadPayees();
-  }
-
-  loadPayees(): void {
-    // Replace customerId with actual value or fetch dynamically
-    const customerId = 1; // Replace with actual customer id
-    this.payeeService.listPayees(customerId).subscribe(
-      (payees) => {
-        this.payees = payees;
-      },
-      (error) => {
-        console.error('Error loading payees:', error);
-        // Handle error, show error message, etc.
-      }
-    );
-  }
-}
+<div class="max-w-md mx-auto bg-white shadow-md p-8 rounded-lg">
+  <h2 class="text-2xl font-bold mb-6">Payee List</h2>
+  <ul>
+    <li *ngFor="let payee of payees" class="border-b border-gray-200 py-2">
+      <p class="text-lg font-semibold">{{ payee.payeeName }}</p>
+      <p class="text-gray-700">{{ payee.payeeAccountNo }} | {{ payee.payeeIfsccode }}</p>
+    </li>
+    <li *ngIf="payees.length === 0" class="text-gray-500 mt-4">No payees found.</li>
+  </ul>
+</div>
