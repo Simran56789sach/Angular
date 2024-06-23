@@ -1,26 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-import { PayeeListComponent } from './components/payee-list/payee-list.component';
-import { PayeeAddComponent } from './components/payee-add/payee-add.component';
-import { PayeeSearchComponent } from './components/payee-search/payee-search.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    PayeeListComponent,
-    PayeeAddComponent,
-    PayeeSearchComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+<div>
+  <h1>Online Banking Portal</h1>
+  <app-payee-add></app-payee-add>
+  <app-payee-search></app-payee-search>
+  <app-payee-list></app-payee-list>
+</div>
