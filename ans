@@ -1,9 +1,25 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { appRoutes } from './app.routes';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+import { AppRoutingModule } from './app.config'; // Import AppRoutingModule
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes)],
-  exports: [RouterModule]
+  declarations: [
+    AppComponent,
+    PayeeListComponent,
+    PayeeAddComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    AppRoutingModule // Add AppRoutingModule to imports
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class AppRoutingModule { }
+export class AppModule { }
