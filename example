@@ -1,19 +1,26 @@
-<div>
-  <h2>Search Payee</h2>
-  <form (ngSubmit)="searchPayee()">
-    <div>
-      <label for="payeeName">Payee Name:</label>
-      <input id="payeeName" [(ngModel)]="payeeName" name="payeeName" required>
-    </div>
-    <button type="submit">Search</button>
-  </form>
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-  <div *ngIf="payees.length > 0">
-    <h3>Results</h3>
-    <ul>
-      <li *ngFor="let payee of payees">
-        {{ payee.payeeName }} - {{ payee.payeeAccountNo }}
-      </li>
-    </ul>
-  </div>
-</div>
+import { AppComponent } from './app.component';
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+import { PayeeSearchComponent } from './components/payee-search/payee-search.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    PayeeListComponent,
+    PayeeAddComponent,
+    PayeeSearchComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
