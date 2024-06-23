@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let payee of payees">
+    {{ payee.payeeName }} - {{ payee.payeeAccountNo }} - {{ payee.payeeIfsccode }}
+  </li>
+</ul>
