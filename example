@@ -1,6 +1,16 @@
-bool isDuplicate = payeeBL.CheckDuplicateAccount(payee.PayeeAccountNo);
+public bool CheckDuplicateAccount(string accountNumber)
+{
+    PayeeDAL payeeDAL = new PayeeDAL();
+    return payeeDAL.CheckDuplicateAccountDAL(accountNumber);
+}
 
-        if (isDuplicate)
-        {
-            return BadRequest("Payee with this account number already exists.");
-        }
+public bool AddPayeeBL(Payee payee)
+{
+    if (CheckDuplicateAccount(payee.PayeeAccountNo))
+    {
+        return false; // Account number already exists
+    }
+
+    PayeeDAL payeeDAL = new PayeeDAL();
+    return payeeDAL.AddPayeeDAL(payee);
+}
