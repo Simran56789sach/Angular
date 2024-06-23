@@ -1,10 +1,25 @@
-import { Component } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app.config'; // Import AppRoutingModule
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+import { AppComponent } from './app.component'; // Import AppComponent
+import { PayeeListComponent } from './components/payee-list/payee-list.component';
+import { PayeeAddComponent } from './components/payee-add/payee-add.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    PayeeListComponent,
+    PayeeAddComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    AppRoutingModule // Include AppRoutingModule
+  ],
+  bootstrap: [AppComponent] // Bootstrap AppComponent
 })
-export class AppComponent {
-  title = 'online-banking-portal';
-}
+export class AppModule { }
