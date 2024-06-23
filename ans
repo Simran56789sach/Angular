@@ -1,5 +1,26 @@
-<nav>
-  <a routerLink="/payees">Payee List</a>
-  <a routerLink="/add-payee">Add Payee</a>
-</nav>
-<router-outlet></router-outlet>
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Payee } from '../models/payee';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PayeeService {
+
+  private baseUrl = 'https://your-api-url/api/payee'; // Replace with your API URL
+
+  constructor(private http: HttpClient) { }
+
+  addPayee(payee: Payee): Observable<Payee> {
+    return this.http.post<Payee>(`${this.baseUrl}/AddPayee`, payee);
+  }
+
+  searchPayee(customerId: number, payeeName: string): Observable<Payee[]> {
+    return this.http.get<Payee[]>(`${this.baseUrl}/SearchPayee/${customerId}/${payeeName}`);
+  }
+
+  listPayees(customerId: number): Observable<Payee[]> {
+    return this.http.get<Payee[]>(`${this.baseUrl}/ListPayees/${customerId}`);
+  }
+}
