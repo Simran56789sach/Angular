@@ -1,0 +1,79 @@
+
+in html i am not able to access this there is error here debitCardDetails.debitCardNo
+Property 'debitCardNo' does not exist on type 'DebitCardDetail[]'.ngtsc(2339)
+debit-card-list.component.ts(8, 19): Error occurs in the template of component DebitCardListComponent.
+
+  <h1>Account Details Search</h1>
+<form #from="ngForm" (ngSubmit)="fetchDebitCards()">
+    <div>    
+        <label for="accountNo">Account No</label>
+        <input type="number" id="accountNo" name="accountNo" [(ngModel)]="accountNo">
+    </div>
+    <button type="submit">Search</button>
+</form>
+<div *ngIf = "debitCardDetails != null; else elseBlock">
+    <p>Debit Card No: {{debitCardDetails.debitCardNo}}</p>
+
+</div>
+<div>
+    <ng-template #elseBlock>{{errorMessage}}</ng-template>
+</div>
+
+
+import { Component, OnInit } from '@angular/core';
+import { DebitCardService } from '../../services/debit-card.service';
+import {  DebitCardDetail } from '../../Models/debit-card';
+
+@Component({
+  selector: 'app-debit-card-list',
+  templateUrl: './debit-card-list.component.html',
+  styleUrls: ['./debit-card-list.component.css']
+})
+export class DebitCardListComponent implements OnInit {
+  // debitCards: DebitCardDetail[] = [];
+  accountNo: number=0;
+  debitCardNotFound: boolean=true;
+  errorMessage: string ="";
+  debitCardDetails: DebitCardDetail[] | undefined;
+
+  constructor(private debitCardService: DebitCardService) {}
+
+  ngOnInit(): void {
+  }
+
+  fetchDebitCards(): void {
+    this.debitCardService.getDebitCardDetails(this.accountNo).subscribe(
+      {
+        next:(details)=>{
+        this.debitCardNotFound=false;
+        this.debitCardDetails = details;
+        console.log(this.debitCardDetails)
+        
+      },
+      // (data) => {
+      //   this.debitCards = data;
+      //   console.log("here");
+      // },
+      error: (response)=> {
+       this.debitCardNotFound=true;
+       this.errorMessage="Debit Card not avaialble";
+       this.debitCardDetails= undefined;
+      }
+  });
+  }
+}
+
+
+
+
+
+  
+  export interface DebitCardDetail {
+    debitCardNo: number;
+    dcapplicationId: number;
+    accountNo: number;
+    cvv: number;
+    expiryDate: Date;
+  }
+
+  
