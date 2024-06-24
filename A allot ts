@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+import { DebitCardService } from '../../services/debit-card.service';
+import { DebitCardDetail } from '../../models/debit-card.model';
+
+@Component({
+  selector: 'app-allot-debit-card',
+  templateUrl: './allot-debit-card.component.html',
+  styleUrls: ['./allot-debit-card.component.css']
+})
+export class AllotDebitCardComponent {
+  dcApplicationId: number;
+  debitCardDetail: DebitCardDetail = {
+    debitCardNo: 0,
+    dcapplicationId: 0,
+    accountNo: 0,
+    cvv: 0,
+    expiryDate: new Date()
+  };
+
+  constructor(private debitCardService: DebitCardService) {}
+
+  allotDebitCard(): void {
+    this.debitCardService.allotDebitCard(this.dcApplicationId, this.debitCardDetail).subscribe(
+      (response) => {
+        console.log('Debit card allotted successfully', response);
+      },
+      (error) => {
+        console.error('Error allotting debit card', error);
+      }
+    );
+  }
+}
