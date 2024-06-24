@@ -1,0 +1,28 @@
+import { Component, OnInit } from '@angular/core';
+import { DebitCardService } from '../../services/debit-card.service';
+import { DebitCardDetail } from '../../models/debit-card.model';
+
+@Component({
+  selector: 'app-debit-card-list',
+  templateUrl: './debit-card-list.component.html',
+  styleUrls: ['./debit-card-list.component.css']
+})
+export class DebitCardListComponent implements OnInit {
+  debitCards: DebitCardDetail[] = [];
+  customerId: number;
+
+  constructor(private debitCardService: DebitCardService) {}
+
+  ngOnInit(): void {}
+
+  fetchDebitCards(): void {
+    this.debitCardService.listDebitCards(this.customerId).subscribe(
+      (data) => {
+        this.debitCards = data;
+      },
+      (error) => {
+        console.error('Error fetching debit card details', error);
+      }
+    );
+  }
+}
