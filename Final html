@@ -1,0 +1,22 @@
+<!-- src/app/components/debit-card-by-customer/debit-card-by-customer.component.html -->
+<div>
+  <h2>Debit Cards by Customer ID</h2>
+  <form (ngSubmit)="onSubmit()">
+    <label for="customerId">Customer ID:</label>
+    <input type="number" id="customerId" [(ngModel)]="customerId" name="customerId" required>
+    <button type="submit">Get Debit Cards</button>
+  </form>
+
+  <div *ngIf="debitCards.length > 0">
+    <h3>Debit Cards</h3>
+    <ul>
+      <li *ngFor="let card of debitCards">
+        Debit Card No: {{ card.debitCardNo }}, CVV: {{ card.cvv }}, Expiry Date: {{ card.expiryDate | date }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>
