@@ -1,0 +1,14 @@
+<div>
+  <h2>Allot Debit Card</h2>
+  <label for="dcApplicationId">Application ID:</label>
+  <input type="number" [(ngModel)]="dcApplicationId" id="dcApplicationId">
+  <form (ngSubmit)="allotDebitCard()">
+    <label for="accountNo">Account Number:</label>
+    <input type="number" [(ngModel)]="debitCardDetail.accountNo" name="accountNo" id="accountNo" required>
+    <label for="cvv">CVV:</label>
+    <input type="number" [(ngModel)]="debitCardDetail.cvv" name="cvv" id="cvv" required>
+    <label for="expiryDate">Expiry Date:</label>
+    <input type="date" [(ngModel)]="debitCardDetail.expiryDate" name="expiryDate" id="expiryDate" required>
+    <button type="submit">Allot</button>
+       </form>
+     </div>
