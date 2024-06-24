@@ -1,0 +1,30 @@
+// src/app/components/debit-card-by-customer/debit-card-by-customer.component.ts
+import { Component } from '@angular/core';
+import { DebitCardService } from '../../services/debit-card.service';
+import { DebitCard } from '../../models/debit-card.model';
+
+@Component({
+  selector: 'app-debit-card-by-customer',
+  templateUrl: './debit-card-by-customer.component.html',
+  styleUrls: ['./debit-card-by-customer.component.css']
+})
+export class DebitCardByCustomerComponent {
+  customerId: number = 0;
+  debitCards: DebitCard[] = [];
+  errorMessage: string = '';
+
+  constructor(private debitCardService: DebitCardService) { }
+
+  onSubmit() {
+    this.debitCardService.getDebitCardsByCustomerId(this.customerId).subscribe(
+      (data) => {
+        this.debitCards = data;
+        this.errorMessage = '';
+      },
+      (error) => {
+        this.errorMessage = 'No debit cards found for this customer.';
+        this.debitCards = [];
+      }
+    );
+  }
+}
