@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { DebitCardDetail, DebitCardApplication } from '../models/debit-card.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DebitCardService {
+  private apiUrl = 'https://your-api-url/api/DebitCard'; // Replace with your actual API URL
+
+  constructor(private http: HttpClient) {}
+
+  getDebitCardDetails(accountNumber: number): Observable<DebitCardDetail[]> {
+    return this.http.get<DebitCardDetail[]>(`${this.apiUrl}/GetDebitCardDetails/${accountNumber}`);
+  }
+
+  applyDebitCard(debitCard: DebitCardApplication): Observable<DebitCardApplication> {
+    return this.http.post<DebitCardApplication>(`${this.apiUrl}/ApplyDebitCard`, debitCard);
+  }
+
+  allotDebitCard(dcApplicationId: number, dcDetail: DebitCardDetail): Observable<any> {
+    return this.http.put(`${this.apiUrl}/AllotDebitCard/${dcApplicationId}`, dcDetail);
+  }
+
+  listDebitCards(customerId: number): Observable<DebitCardDetail[]> {
+    return this.http.get<DebitCardDetail[]>(`${this.apiUrl}/ListDebitCards/${customerId}`);
+  }
+}
