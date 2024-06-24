@@ -1,0 +1,25 @@
+import { NgModule } from '@angular/core';
+     import { BrowserModule } from '@angular/platform-browser';
+     import { HttpClientModule } from '@angular/common/http';
+     import { FormsModule } from '@angular/forms';
+     import { AppComponent } from './app.component';
+     import { DebitCardListComponent } from './components/debit-card-list/debit-card-list.component';
+     import { ApplyDebitCardComponent } from './components/apply-debit-card/apply-debit-card.component';
+     import { AllotDebitCardComponent } from './components/allot-debit-card/allot-debit-card.component';
+     
+     @NgModule({
+       declarations: [
+         AppComponent,
+         DebitCardListComponent,
+         ApplyDebitCardComponent,
+         AllotDebitCardComponent
+       ],
+       imports: [
+         BrowserModule,
+         HttpClientModule,
+         FormsModule
+       ],
+       providers: [],
+       bootstrap: [AppComponent]
+     })
+     export class AppModule { }
