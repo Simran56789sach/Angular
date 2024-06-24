@@ -1,0 +1,10 @@
+<div>
+  <h2>Apply for Debit Card</h2>
+  <form (ngSubmit)="applyDebitCard()">
+    <label for="accountNo">Account Number:</label>
+    <input type="number" [(ngModel)]="debitCardApplication.accountNo" name="accountNo" id="accountNo" required>
+    <label for="customerId">Customer ID:</label>
+    <input type="number" [(ngModel)]="debitCardApplication.customerId" name="customerId" id="customerId" required>
+    <button type="submit">Apply</button>
+  </form>
+</div>
