@@ -1,0 +1,8 @@
+     <div style="text-align:center">
+       <h1>
+         Welcome to the Online Banking Portal!
+       </h1>
+     </div>
+     <app-debit-card-list></app-debit-card-list>
+     <app-apply-debit-card></app-apply-debit-card>
+     <app-allot-debit-card></app-allot-debit-card>
