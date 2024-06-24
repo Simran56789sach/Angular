@@ -1,0 +1,11 @@
+<div>
+  <h2>Debit Card List</h2>
+  <label for="customerId">Customer ID:</label>
+  <input type="number" [(ngModel)]="customerId" id="customerId">
+  <button (click)="fetchDebitCards()">Fetch Debit Cards</button>
+  <ul>
+    <li *ngFor="let card of debitCards">
+      Card No: {{ card.debitCardNo }}, Account No: {{ card.accountNo }}, CVV: {{ card.cvv }}, Expiry Date: {{ card.expiryDate }}
+    </li>
+  </ul>
+</div>
