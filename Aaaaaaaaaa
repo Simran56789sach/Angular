@@ -1,44 +1,61 @@
-I want to apply validators on field in angular 
-customername, contactno, emailid, address,dob,gender to be required 
-
 <h1>Add Customer</h1>
-<form #form="ngForm" (ngSubmit)="addCustomer()" class="form-container">
+<form [formGroup]="customerForm" (ngSubmit)="addCustomer()" class="form-container">
     <div class="form-group">
         <label for="customerName">Customer Name:</label>
-        <input type="text" id="customerName" name="customerName" [(ngModel)]="addCustomerRequest.name" required>
+        <input type="text" id="customerName" formControlName="name" class="form-control">
+        <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" class="error-message">
+            Customer Name is required
+        </div>
     </div>
     <div class="form-group">
         <label for="contactNo">Contact No:</label>
-        <input type="text" id="contactNo" name="contactNo" [(ngModel)]="addCustomerRequest.contactNo" required>
+        <input type="text" id="contactNo" formControlName="contactNo" class="form-control">
+        <div *ngIf="customerForm.get('contactNo')?.invalid && customerForm.get('contactNo')?.touched" class="error-message">
+            Contact No is required
+        </div>
     </div>
     <div class="form-group">
         <label for="emailId">Email Id:</label>
-        <input type="text" id="emailId" name="emailId" [(ngModel)]="addCustomerRequest.emailId" required>
+        <input type="text" id="emailId" formControlName="emailId" class="form-control">
+        <div *ngIf="customerForm.get('emailId')?.invalid && customerForm.get('emailId')?.touched" class="error-message">
+            Email Id is required
+        </div>
     </div>
     <div class="form-group">
         <label for="address">Address:</label>
-        <input type="text" id="address" name="address" [(ngModel)]="addCustomerRequest.address" required>
+        <input type="text" id="address" formControlName="address" class="form-control">
+        <div *ngIf="customerForm.get('address')?.invalid && customerForm.get('address')?.touched" class="error-message">
+            Address is required
+        </div>
     </div>
     <div class="form-group">
         <label for="dob">Date Of Birth:</label>
-        <input type="text" id="dob" name="dob" [(ngModel)]="addCustomerRequest.dob" required>
+        <input type="text" id="dob" formControlName="dob" class="form-control">
+        <div *ngIf="customerForm.get('dob')?.invalid && customerForm.get('dob')?.touched" class="error-message">
+            Date of Birth is required
+        </div>
     </div>
     <div class="form-group">
         <label for="gender">Gender:</label>
-        <select id="gender" name="gender" [(ngModel)]="addCustomerRequest.gender" required>
+        <select id="gender" formControlName="gender" class="form-control">
             <option value="">Select Gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="O">Other</option>
         </select>
+        <div *ngIf="customerForm.get('gender')?.invalid && customerForm.get('gender')?.touched" class="error-message">
+            Gender is required
+        </div>
     </div>
-    <button type="submit" class="submit-button">Submit</button>
+    <button type="submit" class="submit-button" [disabled]="customerForm.invalid">Submit</button>
 </form>
-<div class="error-message">
+<div *ngIf="errorMessage" class="error-message">
     <p>{{errorMessage}}</p>
 </div>
 
-import { Component } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerDetail } from '../Models/CustomerDetail';
 import { CustomerService } from '../customer.service';
 
@@ -47,39 +64,44 @@ import { CustomerService } from '../customer.service';
   templateUrl: './customer-add.component.html',
   styleUrl: './customer-add.component.css'
 })
-export class CustomerAddComponent {
- 
-  addCustomerRequest: CustomerDetail;
+export class CustomerAddComponent implements OnInit {
+  customerForm: FormGroup;
   customerNotFound: boolean = true;
   errorMessage: string = "";
- 
-  constructor(private customerService: CustomerService) {
-    this.addCustomerRequest = new CustomerDetail();
-  }
- 
-  ngOnInit(): void {
- 
-  }
- 
-  addCustomer() {
-    this.customerService.addCustomer(this.addCustomerRequest).subscribe({
-       next: (customer) => {
-        this.customerNotFound = false;
-         console.log("Customer added Successfully: ", customer);
-         console.log(this.addCustomerRequest);
-         this.resetForm();
-       },
-       error: (err) => {
-        this.customerNotFound = true;
-        this.errorMessage = "Invalid Account Number";
-       }
+
+  constructor(private fb: FormBuilder, private customerService: CustomerService) {
+    this.customerForm = this.fb.group({
+      name: ['', Validators.required],
+      contactNo: ['', Validators.required],
+      emailId: ['', Validators.required],
+      address: ['', Validators.required],
+      dob: ['', Validators.required],
+      gender: ['', Validators.required]
     });
- 
-    console.log(this.addCustomerRequest);
   }
- 
+
+  ngOnInit(): void {}
+
+  addCustomer() {
+    if (this.customerForm.valid) {
+      this.customerService.addCustomer(this.customerForm.value).subscribe({
+        next: (customer) => {
+          this.customerNotFound = false;
+          console.log("Customer added Successfully: ", customer);
+          console.log(this.customerForm.value);
+          this.resetForm();
+        },
+        error: (err) => {
+          this.customerNotFound = true;
+          this.errorMessage = "An error occurred while adding the customer";
+        }
+      });
+    }
+  }
+
   resetForm(): void {
-    this.addCustomerRequest = new CustomerDetail();
+    this.customerForm.reset();
   }
 }
- 
+
+
