@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { LoginService } from '../login-service.service';
 import * as CryptoJS from 'crypto-js';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,43 +10,52 @@ import * as CryptoJS from 'crypto-js';
 })
 export class LoginComponent {
   signupUser: any[] = [];
-  
+
   loginObj: any = {
     email: '',
     password: '',
-    role :''
+    role: ''
   }
   router = inject(Router);
- 
-  constructor(private loginService: LoginService){
+
+  constructor(private loginService: LoginService) {
     sessionStorage.setItem('token', '')
   }
- 
+
   onLogin() {
-    const encryptedPassword=CryptoJS.AES.encrypt(this.loginObj.password,'secretCode@123').toString();
+    const key = CryptoJS.enc.Utf8.parse('your-secret-key-16-bytes'); // Ensure this is 16 bytes
+    const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
+
+    const encrypted = CryptoJS.AES.encrypt(this.loginObj.password, key, {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+
+    // Combine IV and encrypted text and encode in Base64
+    const encryptedPassword = iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64);
+
     const encryptedLoginObj = {
       email: this.loginObj.email,
-      password:encryptedPassword
+      password: encryptedPassword
     };
+
     this.loginService.onLogin(encryptedLoginObj).subscribe({
       next: (response) => {
-        //console.log('res:', response);
-        sessionStorage.setItem('token', response.token)
-        sessionStorage.setItem('customerID', response.id)
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('customerID', response.id);
 
         this.loginObj.role = response.role;
-        //console.log(sessionStorage.getItem('customerID'));
 
-        if(this.loginObj.role == 1){
-          this.router.navigateByUrl('customer-home')
-        }
-        else{
-          this.router.navigateByUrl('admin-home')
+        if (this.loginObj.role == 1) {
+          this.router.navigateByUrl('customer-home');
+        } else {
+          this.router.navigateByUrl('admin-home');
         }
       },
       error: (err) => {
         console.error("Error: ", err);
-      }      
-    })
+      }
+    });
   }
 }
