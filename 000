@@ -1,59 +1,52 @@
-using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+import { Component, inject } from '@angular/core';
 
-public static class EncryptionHelper
-{
-    private static byte[] GetAesKey(string key)
-    {
-        var keyBytes = Encoding.UTF8.GetBytes(key);
-        if (keyBytes.Length == 16 || keyBytes.Length == 24 || keyBytes.Length == 32)
-        {
-            return keyBytes;
+import { Router } from '@angular/router';
+import { LoginService } from '../login-service.service';
+import * as CryptoJS from 'crypto-js';
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
+})
+export class LoginComponent {
+  signupUser: any[] = [];
+  
+  loginObj: any = {
+    email: '',
+    password: '',
+    role :''
+  }
+  router = inject(Router);
+ 
+  constructor(private loginService: LoginService){
+    sessionStorage.setItem('token', '')
+  }
+ 
+  onLogin() {
+    const encryptedPassword=CryptoJS.AES.encrypt(this.loginObj.password,'secretCode@123').toString();
+    const encryptedLoginObj = {
+      email: this.loginObj.email,
+      password:encryptedPassword
+    };
+    this.loginService.onLogin(encryptedLoginObj).subscribe({
+      next: (response) => {
+        //console.log('res:', response);
+        sessionStorage.setItem('token', response.token)
+        sessionStorage.setItem('customerID', response.id)
+
+        this.loginObj.role = response.role;
+        //console.log(sessionStorage.getItem('customerID'));
+
+        if(this.loginObj.role == 1){
+          this.router.navigateByUrl('customer-home')
         }
-
-        var paddedKey = new byte[16];
-        Array.Copy(keyBytes, paddedKey, Math.Min(keyBytes.Length, paddedKey.Length));
-        return paddedKey;
-    }
-
-    public static string Decrypt(string encryptedText, string key)
-    {
-        try
-        {
-            var fullCipher = Convert.FromBase64String(encryptedText);
-            var iv = new byte[16];
-            var cipher = new byte[fullCipher.Length - iv.Length];
-
-            Array.Copy(fullCipher, iv, iv.Length);
-            Array.Copy(fullCipher, iv.Length, cipher, 0, cipher.Length);
-
-            var keyBytes = GetAesKey(key);
-
-            using (var aes = Aes.Create())
-            {
-                aes.IV = iv;
-                aes.Key = keyBytes;
-
-                using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
-                {
-                    using (var msDecrypt = new MemoryStream(cipher))
-                    {
-                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-                            using (var srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                return srDecrypt.ReadToEnd();
-                            }
-                        }
-                    }
-                }
-            }
+        else{
+          this.router.navigateByUrl('admin-home')
         }
-        catch (Exception ex)
-        {
-            throw new Exception("Error during decryption: " + ex.Message);
-        }
-    }
+      },
+      error: (err) => {
+        console.error("Error: ", err);
+      }      
+    })
+  }
 }
