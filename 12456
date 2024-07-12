@@ -1,4 +1,63 @@
-using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Online_Banking_Portal.BL;
+using Online_Banking_Portal.DAL;
+using Online_Banking_Portal.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace Online_Banking_Portal.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private static LoginDAL loginDAL = new LoginDAL();
+        private string customerID = "";
+        private readonly JwtOptions _options;
+
+        public AuthController(IOptions<JwtOptions> options)
+        {
+            _options = options.Value;
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromBody] LoginUser login)
+        {
+            // validate email and password
+            // Fetching the user login detail
+            var userDetail = loginDAL.GetUserByEmail(login.Email);
+            if (userDetail == null)
+            {
+                return BadRequest(new { error = "email ID does not exist" });
+            }
+
+            if (userDetail.userPassword != login.Password)
+            {
+                return BadRequest(new { error = "email/password is incorrect" });
+            }
+            // If correct then we will generate the token
+            var JwtKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.Key));
+            var credential = new SigningCredentials(JwtKey, SecurityAlgorithms.HmacSha256);
+
+            if(userDetail.userRole == 1)
+            {
+                customerID = Convert.ToString(loginDAL.GetCustomerIdByEmail(login.Email));
+            }
+
+            List<Claim> claims = new List<Claim>() {
+                new Claim(type: "customerID", value: customerID)
+            };
+
+            var sToken = new JwtSecurityToken(_options.Key, _options.Issure, claims, expires: DateTime.Now.AddHours(1), signingCredentials: credential);
+            var token = new JwtSecurityTokenHandler().WriteToken(sToken);
+            return Ok(new { token = token, id = customerID,role=userDetail.userRole });
+        }
+    }
+}using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
