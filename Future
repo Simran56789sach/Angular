@@ -1,0 +1,15 @@
+function getFutureDate(daysAhead: number, fromDate: Date): string {
+    const futureDate = new Date(fromDate);
+    futureDate.setDate(futureDate.getDate() + daysAhead);
+
+    // Format the date as per your requirement, for example 'YYYY-MM-DD'
+    const year = futureDate.getFullYear();
+    const month = String(futureDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(futureDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+const fromDate = new Date(); // or use any other starting date
+const futureDate = getFutureDate(45, fromDate);
+console.log(futureDate);
